@@ -24,3 +24,8 @@ class Database:
         if many:
             return cursor.fetchall()
         return cursor.fetchone()
+
+    def execute(self, sql: str):
+        cursor = self.conn.cursor()
+        cursor.execute(sql)
+        self.conn.commit()
