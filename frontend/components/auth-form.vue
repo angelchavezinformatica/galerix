@@ -4,7 +4,12 @@
     <form class="Form" @submit.prevent="$emit('handleSubmit')">
       <slot />
       <div class="Form-submit">
-        <input type="submit" :value="submitValue" />
+        <input
+          type="submit"
+          class="Form-submit-input"
+          :value="submitValue"
+          :disabled="!disabled"
+        />
       </div>
       <hr />
       <slot name="message" />
@@ -16,6 +21,7 @@
 interface Prop {
   title: string;
   submitValue: string;
+  disabled: boolean;
 }
 defineProps<Prop>();
 defineEmits(["handleSubmit"]);
@@ -58,7 +64,7 @@ defineEmits(["handleSubmit"]);
         border-color: #007BFF
         outline: none
     .Form-submit
-      input[type="submit"]
+      .Form-submit-input
         background-color: #007BFF
         color: #fff
         padding: 0.75rem
@@ -69,6 +75,8 @@ defineEmits(["handleSubmit"]);
         transition: background-color 0.3s ease
         &:hover
           background-color: #0056b3
+      .Form-submit-input[disabled]
+        background-color: #007BFF73
   hr
     margin: 2rem 0
     border: none

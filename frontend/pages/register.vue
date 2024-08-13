@@ -2,14 +2,15 @@
   <AuthForm
     title="Bienvenido"
     submit-value="Registrarse"
+    :disabled="disabled"
     @handle-submit="handleSubmit"
   >
     <div class="Form-input">
-      <label for="name" class="Form-input-label">Nombre completo</label>
+      <label for="name" class="Form-input-label">Nombre Completo</label>
       <input type="text" class="Form-input-entry" v-model="name" />
     </div>
     <div class="Form-input">
-      <label for="username" class="Form-input-label">Nombre de usuario</label>
+      <label for="username" class="Form-input-label">Nombre de Usuario</label>
       <input type="text" class="Form-input-entry" v-model="username" />
     </div>
     <div class="Form-input">
@@ -18,7 +19,7 @@
     </div>
     <div class="Form-input">
       <label for="birthday" class="Form-input-label">
-        Fecha de nacimiento
+        Fecha de Nacimiento
       </label>
       <input type="date" class="Form-input-entry" v-model="birthday" />
     </div>
@@ -34,19 +35,8 @@
 </template>
 
 <script setup lang="ts">
-const username: Ref<string> = ref("");
-const password: Ref<string> = ref("");
-const name: Ref<string> = ref("");
-const birthday: Ref<string> = ref("");
-const address: Ref<string> = ref("");
+import { usePageRegister } from "~/composables/pages/register";
 
-const handleSubmit = () => {
-  console.log({
-    username: username.value,
-    password: password.value,
-    name: name.value,
-    birthday: birthday.value,
-    address: address.value,
-  });
-};
+const { address, birthday, disabled, handleSubmit, name, password, username } =
+  usePageRegister();
 </script>

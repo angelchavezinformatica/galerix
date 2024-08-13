@@ -2,6 +2,7 @@
   <AuthForm
     title="Bienvenido"
     submitValue="Iniciar Sesión"
+    :disabled="disabled"
     @handle-submit="handleSubmit"
   >
     <div class="Form-input">
@@ -35,6 +36,10 @@
 <script setup lang="ts">
 const username: Ref<string> = ref("");
 const password: Ref<string> = ref("");
+
+const disabled: ComputedRef<boolean> = computed(() =>
+  Boolean(username.value && password.value)
+);
 
 const handleSubmit = () => {
   console.log({
