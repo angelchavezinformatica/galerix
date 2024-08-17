@@ -75,7 +75,6 @@ CREATE TABLE comentario_foto(
 CREATE TABLE pagina(
 	id INTEGER NOT NULL AUTO_INCREMENT,
 	id_usuario INTEGER NOT NULL,
-    ruta_pagina VARCHAR(100),
     PRIMARY KEY (id),
     FOREIGN KEY (id_usuario) REFERENCES usuario(id)
 );
