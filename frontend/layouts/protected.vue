@@ -1,12 +1,12 @@
 <template>
-  <slot v-if="user" />
+  <slot v-if="token" />
 </template>
 
 <script setup lang="ts">
-import { useUser } from "~/stores/user";
-
-const { user } = useUser();
+const { getToken, token } = useToken();
 const router = useRouter();
 
-if (!user) router.push("/");
+callOnce(getToken);
+
+if (!token) router.push("/");
 </script>
