@@ -61,7 +61,7 @@ CREATE TABLE foto_galeria(
     FOREIGN KEY (id_foto) REFERENCES foto(id)
 );
 
-CREATE TABLE comentario_fot(
+CREATE TABLE comentario_foto(
 	id INTEGER NOT NULL AUTO_INCREMENT,
     id_usuario INTEGER NOT NULL,
     id_foto INTEGER NOT NULL,

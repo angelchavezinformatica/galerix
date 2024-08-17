@@ -53,6 +53,7 @@ export const usePageRegister = () => {
           name: name.value,
           birthday: birthday.value,
           address: address.value,
+          emails: Array.from(emails.value),
         },
       }),
       {

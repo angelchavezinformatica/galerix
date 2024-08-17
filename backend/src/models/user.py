@@ -1,6 +1,7 @@
 import datetime
 
 from pydantic import BaseModel
+from typing import List
 
 
 class UserCreate(BaseModel):
@@ -9,6 +10,7 @@ class UserCreate(BaseModel):
     name: str
     birthday: datetime.date
     address: str
+    emails: List[str]
 
 
 class UserLogin(BaseModel):

@@ -32,6 +32,26 @@ async def create_user(user: UserCreate):
         (user.username, hashed_password, user.name, user.birthday, user.address)
     )
 
+    if not user.emails:
+        return Response()
+
+    data = DB.select(
+        f"SELECT id FROM usuario WHERE nombre_usuario=%s;",
+        (user.username,),
+        many=False
+    )
+
+    sql = "INSERT INTO correo_usuario (id_usuario, correo) VALUES "
+    params = []
+
+    for email in user.emails:
+        if email != user.emails[0]:
+            sql += ', '
+        sql += f"({data[0]}, %s)"
+        params.append(email)
+
+    DB.execute(sql, params)
+
     return Response()
 
 
