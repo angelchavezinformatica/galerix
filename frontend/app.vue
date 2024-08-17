@@ -9,4 +9,9 @@
 useHead({ title: "Galerix" });
 
 import { Toaster } from "vue-sonner";
+import { useToken } from "./stores/token";
+
+const { getToken } = useToken();
+
+callOnce(getToken);
 </script>

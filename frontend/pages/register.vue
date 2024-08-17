@@ -27,6 +27,7 @@
       <label for="address" class="Form-input-label">Dirección</label>
       <input type="text" class="Form-input-entry" v-model="address" />
     </div>
+    <EmailSet :emails="emails" @add-email="addEmail" />
 
     <template v-slot:message>
       <p>¿Ya tiene una cuenta? <NuxtLink to="/">Inicie sesión</NuxtLink></p>
@@ -37,6 +38,15 @@
 <script setup lang="ts">
 import { usePageRegister } from "~/composables/pages/register";
 
-const { address, birthday, disabled, handleSubmit, name, password, username } =
-  usePageRegister();
+const {
+  addEmail,
+  address,
+  birthday,
+  disabled,
+  emails,
+  handleSubmit,
+  name,
+  password,
+  username,
+} = usePageRegister();
 </script>

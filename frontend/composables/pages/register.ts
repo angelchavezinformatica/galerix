@@ -10,6 +10,7 @@ export const usePageRegister = () => {
   const name: Ref<string> = ref("");
   const birthday: Ref<string> = ref("");
   const address: Ref<string> = ref("");
+  const emails: Ref<Set<string>> = ref(new Set());
 
   const disabled: ComputedRef<boolean> = computed(() =>
     Boolean(
@@ -20,6 +21,10 @@ export const usePageRegister = () => {
         address.value
     )
   );
+
+  const addEmail = (email: string) => {
+    emails.value.add(email);
+  };
 
   const handleSubmit = async () => {
     if (!/^.{8,}$/.test(password.value)) {
@@ -68,9 +73,11 @@ export const usePageRegister = () => {
   };
 
   return {
+    addEmail,
     address,
     birthday,
     disabled,
+    emails,
     handleSubmit,
     name,
     password,

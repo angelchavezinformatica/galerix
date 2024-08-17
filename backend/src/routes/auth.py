@@ -46,7 +46,7 @@ async def login(user: UserLogin):
     if data is None:
         return Response(status_code=404)
 
-    if not verify_hash(data[0], user.password):
+    if not verify_hash(user.password, data[0]):
         return Response(status_code=400)
 
     token = create_token(data={'username': user.username},
