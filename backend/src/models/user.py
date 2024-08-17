@@ -9,3 +9,8 @@ class UserCreate(BaseModel):
     name: str
     birthday: datetime.date
     address: str
+
+
+class UserLogin(BaseModel):
+    username: str
+    password: str

@@ -13,6 +13,11 @@ Para crear la base de datos, se debe ejecutar el archivo `script.sql`, para crea
 Luego se debe configurar las variables de entorno necesarias para ejercutar la aplicación.
 
 ```
+# SECRET
+
+SECRET_KEY=<secret-key>
+ALGORITHM=<algorithm>
+
 # DATABASE
 
 DB_USER=<user>

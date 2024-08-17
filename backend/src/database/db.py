@@ -17,15 +17,15 @@ class Database:
         if self.conn.is_connected():
             return self.conn.get_server_info()
 
-    def select(self, sql: str, many=True):
+    def select(self, sql: str, params: tuple = (), many=True):
         cursor = self.conn.cursor()
-        cursor.execute(sql)
+        cursor.execute(sql, params)
 
         if many:
             return cursor.fetchall()
         return cursor.fetchone()
 
-    def execute(self, sql: str):
+    def execute(self, sql: str, params: tuple = ()):
         cursor = self.conn.cursor()
-        cursor.execute(sql)
+        cursor.execute(sql, params)
         self.conn.commit()
