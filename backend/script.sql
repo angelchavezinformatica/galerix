@@ -81,10 +81,10 @@ CREATE TABLE pagina(
 
 CREATE TABLE blog(
 	id INTEGER NOT NULL AUTO_INCREMENT,
-    id_usuario INTEGER NOT NULL,
+    id_pagina INTEGER NOT NULL,
     titulo VARCHAR(100),
     PRIMARY KEY (id),
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+    FOREIGN KEY (id_pagina) REFERENCES pagina(id)
 );
 
 CREATE TABLE post(

@@ -6,7 +6,16 @@
     <button class="Menu-button" @click="isModalCreateGaleryOpen = true">
       Crear Galería
     </button>
-    <button v-if="showCreatePage" class="Menu-button">Crear Página</button>
+    <button
+      v-show="!hasPage"
+      class="Menu-button"
+      @click="isModalCreatePageOpen = true"
+    >
+      Crear Página
+    </button>
+    <NuxtLink :to="`/page/${username}`" v-show="hasPage" class="Menu-button">
+      Ir a la Página
+    </NuxtLink>
 
     <ProfileMenuAddPhoto
       v-if="isModalAddPhotoOpen"
@@ -16,13 +25,24 @@
       v-if="isModalCreateGaleryOpen"
       @close="isModalCreateGaleryOpen = false"
     />
+    <ProfileMenuCreatePage
+      v-if="isModalCreatePageOpen"
+      @close="isModalCreatePageOpen = false"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
+const token = useTokenStore();
+
 const isModalAddPhotoOpen = ref(false);
 const isModalCreateGaleryOpen = ref(false);
-const showCreatePage = true;
+const isModalCreatePageOpen = ref(false);
+const hasPage = computed(() => token.user?.page || false);
+
+const {
+  params: { username },
+} = useRoute();
 </script>
 
 <style scope lang="sass">
@@ -44,6 +64,8 @@ const showCreatePage = true;
     border-radius: 4px
     cursor: pointer
     transition: background-color 0.3s ease
+    text-decoration: none
+    font-family: 'Arial'
     &:hover
       background-color: #0056b3
 </style>

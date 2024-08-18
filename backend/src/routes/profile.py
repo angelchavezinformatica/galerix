@@ -2,7 +2,7 @@ from fastapi import APIRouter, Header
 from fastapi.responses import JSONResponse, Response
 
 from src.database import DB
-from src.utils.auth import auth_user, decode_token
+from src.utils.auth import auth_user
 
 profile_router = APIRouter(
     prefix='/api',
@@ -16,7 +16,7 @@ def get_response_profile(authorization: str = None, username: str = None):
     if isinstance(auth, Response):
         return auth
 
-    _, token_data = auth
+    _auth, token_data = auth
 
     user = DB.select(
         "SELECT id, nombre_usuario, nombre, fecha_nacimiento, direccion "
@@ -31,9 +31,16 @@ def get_response_profile(authorization: str = None, username: str = None):
     )
 
     galleries = DB.select(
-        "SELECT g.id, nombre_galeria FROM galeria g JOIN usuario u "
-        "WHERE g.id_usuario = u.id AND u.nombre_usuario = %s;",
+        "SELECT g.id, nombre_galeria FROM galeria g JOIN usuario u ON g.id_usuario = u.id "
+        "WHERE u.nombre_usuario = %s;",
         (token_data.get('username') if username is None else username,)
+    )
+
+    page = DB.select(
+        "SELECT p.id FROM pagina p JOIN usuario u ON p.id_usuario = u.id "
+        "WHERE u.id=%s;",
+        (_auth[0],),
+        many=False
     )
 
     return JSONResponse(content={
@@ -45,7 +52,8 @@ def get_response_profile(authorization: str = None, username: str = None):
         'galleries': [{
             'id': gallerie[0],
             'name': gallerie[1]
-        } for gallerie in galleries]
+        } for gallerie in galleries],
+        'page': page is not None
     })
 
 
@@ -72,3 +80,28 @@ async def search_user(name: str, authorization: str = Header(...)):
     )
 
     return JSONResponse(content=[{'name': user[0], 'username': user[1]} for user in users])
+
+
+@profile_router.post('/page')
+async def create_page(authorization: str = Header(...)):
+    auth = auth_user(authorization)
+
+    if isinstance(auth, Response):
+        return auth
+
+    page_id = DB.select(
+        "SELECT p.id FROM usuario u JOIN pagina p ON p.id_usuario = u.id "
+        "WHERE u.id = %s;",
+        (auth[0],),
+        many=False
+    )
+
+    if page_id is not None:
+        return Response(status_code=409)
+
+    DB.execute(
+        "INSERT INTO pagina (id_usuario) VALUES (%s);",
+        (auth[0],)
+    )
+
+    return Response()

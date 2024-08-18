@@ -10,6 +10,7 @@ export interface ProfileI {
   address: string;
   emails: string[];
   galleries: GalleryI[];
+  page: boolean;
 }
 
 export interface UserFoundI {
