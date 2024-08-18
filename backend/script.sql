@@ -55,7 +55,7 @@ CREATE TABLE galeria(
 );
 
 CREATE TABLE foto_galeria(
-	id_galeria INTEGER NOT NULL AUTO_INCREMENT,
+	id_galeria INTEGER NOT NULL,
     id_foto INTEGER NOT NULL,
     FOREIGN KEY (id_galeria) REFERENCES galeria(id),
     FOREIGN KEY (id_foto) REFERENCES foto(id)

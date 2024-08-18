@@ -6,6 +6,7 @@ export interface Options {
   method?: Method;
   headers?: any;
   body?: any;
+  response?: boolean;
 }
 
 const _fetch = async (url: string, options?: Options) => {
@@ -30,11 +31,16 @@ export const fetchJSON = async (url: string, options?: Options) => {
 };
 
 export const useFetchJSON = <T>() => {
+  const router = useRouter();
   const data: Ref<T | null> = ref(null);
 
   const request = async (url: string, options?: Options) => {
-    const response = await fetchJSON(url, options);
-    data.value = await response.json();
+    const response = await _fetch(url, options);
+
+    if (!response.ok) router.push("/");
+    else if (options?.response === true || options?.response === undefined) {
+      data.value = (await response.json()) as T;
+    }
 
     return { response };
   };
@@ -49,7 +55,7 @@ export const useProtectedFetchJSON = <T>() => {
   const data: Ref<T | null> = ref(null);
 
   const request = async (url: string, options?: Options) => {
-    const response = await fetchJSON(url, {
+    const response = await _fetch(url, {
       method: options?.method,
       headers: {
         Authorization: `Bearer ${token}`,
@@ -58,8 +64,9 @@ export const useProtectedFetchJSON = <T>() => {
       body: options?.body,
     });
 
-    if (response.ok) data.value = await response.json();
-    else {
+    if (options?.response === true || options?.response === undefined) {
+      data.value = (await response.json()) as T;
+    } else if (response.status === 401) {
       toast.error("Inicie sesión.");
       router.push("/");
     }

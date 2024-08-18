@@ -1,5 +1,6 @@
 <template>
   <ProfileInfo :user="_user" v-if="_user" />
+  <ProfileMenu v-if="username === user.user?.username" />
 </template>
 
 <script setup lang="ts">
@@ -9,7 +10,7 @@ import { useProtectedFetchJSON } from "~/services/api";
 
 definePageMeta({ layout: "protected" });
 
-const { user } = useTokenStore();
+const user = useTokenStore();
 const { data, request } = useProtectedFetchJSON<ProfileI>();
 
 let _user: Ref<ProfileI | null> = ref(null);
@@ -19,8 +20,8 @@ const {
 } = useRoute();
 
 onMounted(async () => {
-  if (username === user?.username) {
-    _user.value = user;
+  if (username === user.user?.username) {
+    _user.value = user.user;
     return;
   }
   await request(`${profileURL}/${username}`);

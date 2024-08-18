@@ -10,12 +10,13 @@ profile_router = APIRouter(
 )
 
 
-def get_response_profile(authorization: str, username: str = None):
-    try:
-        token = authorization.split('Bearer ')[1]
-        token_data = decode_token(token)
-    except Exception:
-        return Response(status_code=401)
+def get_response_profile(authorization: str = None, username: str = None):
+    auth = auth_user(authorization, is_token_data=True)
+
+    if isinstance(auth, Response):
+        return auth
+
+    _, token_data = auth
 
     user = DB.select(
         "SELECT id, nombre_usuario, nombre, fecha_nacimiento, direccion "
@@ -29,17 +30,27 @@ def get_response_profile(authorization: str, username: str = None):
         (user[0],)
     )
 
+    galleries = DB.select(
+        "SELECT g.id, nombre_galeria FROM galeria g JOIN usuario u "
+        "WHERE g.id_usuario = u.id AND u.nombre_usuario = %s;",
+        (token_data.get('username') if username is None else username,)
+    )
+
     return JSONResponse(content={
         'username': user[1],
         'name': user[2],
         'birthday': str(user[3]),
         'address': user[4],
-        'emails': [row[0] for row in emails]
+        'emails': [row[0] for row in emails],
+        'galleries': [{
+            'id': gallerie[0],
+            'name': gallerie[1]
+        } for gallerie in galleries]
     })
 
 
 @profile_router.get('/profile')
-async def get_profile(authorization: str = Header(...)):
+async def get_user_profile(authorization: str = Header(...)):
     return get_response_profile(authorization)
 
 
@@ -52,7 +63,7 @@ async def get_profile(username: str, authorization: str = Header(...)):
 async def search_user(name: str, authorization: str = Header(...)):
     auth = auth_user(authorization)
 
-    if auth is not None:
+    if isinstance(auth, Response):
         return auth
 
     users = DB.select(

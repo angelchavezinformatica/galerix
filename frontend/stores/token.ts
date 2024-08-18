@@ -1,5 +1,5 @@
 import { profileURL } from "~/config/api";
-import type { ProfileI } from "~/interfaces/profile";
+import type { GalleryI, ProfileI } from "~/interfaces/profile";
 import { useFetchJSON } from "~/services/api";
 
 export const useTokenStore = defineStore("usertoken", () => {
@@ -18,6 +18,10 @@ export const useTokenStore = defineStore("usertoken", () => {
     user.value = data.value;
   };
 
+  const updateGalleries = (galleries: GalleryI[] | null) => {
+    if (user.value?.galleries && galleries) user.value.galleries = galleries;
+  };
+
   const updateToken = async (_token: string) => {
     token.value = _token;
     localStorage.setItem("token", _token);
@@ -29,5 +33,5 @@ export const useTokenStore = defineStore("usertoken", () => {
     await getUser(token.value);
   };
 
-  return { getToken, token, user, updateToken };
+  return { getToken, token, user, updateGalleries, updateToken };
 });

@@ -42,6 +42,9 @@ export const usePageRegister = () => {
     } else if (!/(?=.*[!@#$%^&*])/.test(password.value)) {
       toast.error("La contraseña debe contener un caracter especial.");
       return;
+    } else if (username.value.includes(" ")) {
+      toast.error("No se permiten espacios en los nombres de usuario.");
+      return;
     }
 
     toast.promise(

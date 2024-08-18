@@ -29,3 +29,4 @@ class Database:
         cursor = self.conn.cursor()
         cursor.execute(sql, params)
         self.conn.commit()
+        return cursor.lastrowid

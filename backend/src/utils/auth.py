@@ -27,7 +27,7 @@ def decode_token(token: str):
                       algorithms=[CONFIG.get('ALGORITHM')])
 
 
-def auth_user(authorization: str):
+def auth_user(authorization: str, is_token_data: bool = False):
     try:
         token = authorization.split('Bearer ')[1]
         token_data = decode_token(token)
@@ -42,3 +42,8 @@ def auth_user(authorization: str):
 
     if user is None:
         return Response(status_code=401)
+
+    if is_token_data:
+        return user, token_data
+
+    return user
