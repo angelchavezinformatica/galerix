@@ -1,7 +1,10 @@
 import bcrypt
 import jwt
 
+from fastapi.responses import Response
+
 from config import CONFIG
+from src.database import DB
 
 
 def verify_hash(plain: str, hashed: str):
@@ -22,3 +25,20 @@ def create_token(data: dict):
 def decode_token(token: str):
     return jwt.decode(token, CONFIG.get('SECRET_KEY'),
                       algorithms=[CONFIG.get('ALGORITHM')])
+
+
+def auth_user(authorization: str):
+    try:
+        token = authorization.split('Bearer ')[1]
+        token_data = decode_token(token)
+    except Exception:
+        return Response(status_code=401)
+
+    user = DB.select(
+        "SELECT id FROM usuario WHERE nombre_usuario=%s;",
+        (token_data.get('username'),),
+        many=False
+    )
+
+    if user is None:
+        return Response(status_code=401)

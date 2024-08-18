@@ -25,8 +25,8 @@ async def create_user(user: UserCreate):
     hashed_password = get_hash(user.password)
 
     DB.execute(
-        """INSERT INTO usuario (nombre_usuario, contrasena, nombre, fecha_nacimiento, direccion)
-            VALUES (%s, %s, %s, %s, %s);""",
+        "INSERT INTO usuario (nombre_usuario, contrasena, nombre, fecha_nacimiento, direccion) "
+        "VALUES (%s, %s, %s, %s, %s);",
         (user.username, hashed_password, user.name, user.birthday, user.address)
     )
 
@@ -34,7 +34,7 @@ async def create_user(user: UserCreate):
         return Response()
 
     data = DB.select(
-        f"SELECT id FROM usuario WHERE nombre_usuario=%s;",
+        "SELECT id FROM usuario WHERE nombre_usuario=%s;",
         (user.username,),
         many=False
     )
