@@ -1,3 +1,5 @@
+import { toast } from "vue-sonner";
+
 export type Method = "GET" | "POST" | "UPDATE" | "DELETE" | "PATCH";
 
 export interface Options {
@@ -33,6 +35,34 @@ export const useFetchJSON = <T>() => {
   const request = async (url: string, options?: Options) => {
     const response = await fetchJSON(url, options);
     data.value = await response.json();
+
+    return { response };
+  };
+
+  return { data, request };
+};
+
+export const useProtectedFetchJSON = <T>() => {
+  const { token } = useTokenStore();
+  const router = useRouter();
+
+  const data: Ref<T | null> = ref(null);
+
+  const request = async (url: string, options?: Options) => {
+    const response = await fetchJSON(url, {
+      method: options?.method,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        ...options?.headers,
+      },
+      body: options?.body,
+    });
+
+    if (response.ok) data.value = await response.json();
+    else {
+      toast.error("Inicie sesión.");
+      router.push("/");
+    }
 
     return { response };
   };

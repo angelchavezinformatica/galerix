@@ -1,5 +1,3 @@
-from datetime import datetime, timedelta, timezone
-
 import bcrypt
 import jwt
 
@@ -15,14 +13,12 @@ def get_hash(plain: str):
     return bcrypt.hashpw(plain.encode('utf-8'), salt)
 
 
-def create_token(data: dict, expires_delta: timedelta | None = None):
-    to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.now(timezone.utc) + expires_delta
-    else:
-        expire = datetime.now(timezone.utc) + timedelta(minutes=15)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode,
-                             CONFIG.get('SECRET_KEY'),
-                             algorithm=CONFIG.get('ALGORITHM'))
-    return encoded_jwt
+def create_token(data: dict):
+    return jwt.encode(data.copy(),
+                      CONFIG.get('SECRET_KEY'),
+                      algorithm=CONFIG.get('ALGORITHM'))
+
+
+def decode_token(token: str):
+    return jwt.decode(token, CONFIG.get('SECRET_KEY'),
+                      algorithms=[CONFIG.get('ALGORITHM')])

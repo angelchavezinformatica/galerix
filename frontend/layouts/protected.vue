@@ -1,12 +1,13 @@
 <template>
-  <slot v-if="token" />
+  <ProtectedHeader v-if="token" />
+  <main class="Main">
+    <slot v-if="token" />
+  </main>
 </template>
 
 <script setup lang="ts">
-const { getToken, token } = useToken();
+const { token } = useTokenStore();
 const router = useRouter();
-
-callOnce(getToken);
 
 if (!token) router.push("/");
 </script>

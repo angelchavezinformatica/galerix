@@ -1,10 +1,9 @@
 import { toast } from "vue-sonner";
 import { LoginUser } from "~/config/api";
 import { fetchJSON } from "~/services/api";
-import { useToken } from "~/stores/token";
 
 export const useLogin = () => {
-  const { updateToken } = useToken();
+  const { updateToken } = useTokenStore();
   const router = useRouter();
 
   const username: Ref<string> = ref("");
@@ -35,7 +34,7 @@ export const useLogin = () => {
         },
         success: (data) => {
           data.json().then((value) => {
-            updateToken(value.token);
+            updateToken(value.token).then((_) => {});
           });
           router.push("/gallery");
           return "Inicio de sesión valido.";

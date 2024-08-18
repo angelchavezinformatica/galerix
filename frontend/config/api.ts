@@ -1,6 +1,9 @@
 export const base = "http://localhost:8000";
+export const api = `${base}/api`;
 
-export const auth = `${base}/auth`;
+export const authURL = `${base}/auth`;
 
-export const CreateUser = `${auth}/create`;
-export const LoginUser = `${auth}/login`;
+export const CreateUser = `${authURL}/create`;
+export const LoginUser = `${authURL}/login`;
+
+export const profileURL = `${api}/profile`;

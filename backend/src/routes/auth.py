@@ -1,5 +1,3 @@
-from datetime import timedelta
-
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse, Response
 
@@ -69,7 +67,6 @@ async def login(user: UserLogin):
     if not verify_hash(user.password, data[0]):
         return Response(status_code=400)
 
-    token = create_token(data={'username': user.username},
-                         expires_delta=timedelta(days=1))
+    token = create_token(data={'username': user.username})
 
     return JSONResponse(content={'token': token})
