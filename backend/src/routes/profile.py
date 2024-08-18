@@ -18,7 +18,7 @@ def get_response_profile(authorization: str, username: str = None):
         return Response(status_code=401)
 
     user = DB.select(
-        "SELECT id, nombre_usuario, nombre, fecha_nacimiento, direccion"
+        "SELECT id, nombre_usuario, nombre, fecha_nacimiento, direccion "
         "FROM usuario WHERE nombre_usuario=%s;",
         (token_data.get('username') if username is None else username,),
         many=False

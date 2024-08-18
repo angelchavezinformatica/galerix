@@ -5,5 +5,5 @@ export const authURL = `${base}/auth`;
 
 export const CreateUser = `${authURL}/create`;
 export const LoginUser = `${authURL}/login`;
-
 export const profileURL = `${api}/profile`;
+export const searchURL = `${api}/search-user`;

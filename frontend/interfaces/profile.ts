@@ -5,3 +5,8 @@ export interface ProfileI {
   address: string;
   emails: string[];
 }
+
+export interface UserFoundI {
+  username: string;
+  name: string;
+}

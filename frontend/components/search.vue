@@ -4,10 +4,10 @@
       <button class="Modal-close" @click="$emit('close')">x</button>
       <div class="Search">
         <div class="Search-input">
-          <input type="text" placeholder="Buscar..." />
-          <button><IconSearch /></button>
+          <input type="text" placeholder="Buscar..." v-model="search" />
+          <button @click="handleSearch"><IconSearch /></button>
         </div>
-        <div class="Search-users">
+        <div class="Search-users" @click="$emit('close')">
           <NuxtLink
             v-for="(user, index) in users"
             :to="`/profile/${user.username}`"
@@ -22,10 +22,18 @@
 </template>
 
 <script setup lang="ts">
-const users = [
-  { name: "John Doe", username: "jdoe" },
-  { name: "Mary Miller", username: "mmiller88" },
-];
+import { searchURL } from "~/config/api";
+import type { UserFoundI } from "~/interfaces/profile";
+import { useProtectedFetchJSON } from "~/services/api";
+
+const search: Ref<string> = ref("");
+
+const { data: users, request } = useProtectedFetchJSON<UserFoundI[]>();
+
+const handleSearch = async () => {
+  if (!search.value.trim()) return;
+  await request(`${searchURL}/${search.value}`);
+};
 </script>
 
 <style scope lang="sass">
