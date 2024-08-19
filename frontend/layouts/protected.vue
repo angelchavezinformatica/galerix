@@ -11,3 +11,8 @@ const router = useRouter();
 
 if (!token) router.push("/");
 </script>
+
+<style scoped lang="sass">
+.Main
+  margin-top: 6rem
+</style>

@@ -4,7 +4,7 @@ import os
 from uuid import uuid4
 
 from fastapi import APIRouter, Header
-from fastapi.responses import Response
+from fastapi.responses import JSONResponse, Response
 
 from src.database import DB
 from src.models.photo import UploadPhoto
@@ -17,7 +17,7 @@ photo_router = APIRouter(
 
 
 @photo_router.post('/photo')
-def upload_photo(photo: UploadPhoto, authorization: str = Header(...)):
+async def upload_photo(photo: UploadPhoto, authorization: str = Header(...)):
     auth = auth_user(authorization)
 
     if isinstance(auth, Response):
@@ -51,3 +51,29 @@ def upload_photo(photo: UploadPhoto, authorization: str = Header(...)):
     DB.execute(sql)
 
     return Response()
+
+
+@photo_router.get('/photo/all')
+async def get_all_photos(authorization: str = Header(...)):
+    auth = auth_user(authorization)
+
+    if isinstance(auth, Response):
+        return auth
+
+    photos = DB.select(
+        "SELECT u.nombre_usuario, u.nombre, f.ruta_archivo, f.instante_subida, f.titulo, f.descripcion "
+        "FROM foto f JOIN usuario u ON f.id_usuario = u.id "
+        "ORDER BY f.instante_subida DESC;"
+    )
+
+    return JSONResponse(content=[
+        {
+            'username': photo[0],
+            'name': photo[1],
+            'path': photo[2],
+            'timestamp': str(photo[3]),
+            'title': photo[4],
+            'description': photo[5],
+        }
+        for photo in photos
+    ])

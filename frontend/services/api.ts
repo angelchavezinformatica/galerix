@@ -7,6 +7,7 @@ export interface Options {
   headers?: any;
   body?: any;
   response?: boolean;
+  token?: string;
 }
 
 const _fetch = async (url: string, options?: Options) => {
@@ -58,7 +59,7 @@ export const useProtectedFetchJSON = <T>() => {
     const response = await _fetch(url, {
       method: options?.method,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${options?.token ? options.token : token}`,
         ...options?.headers,
       },
       body: options?.body,

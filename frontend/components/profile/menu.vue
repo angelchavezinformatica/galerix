@@ -49,6 +49,7 @@ const {
 .Menu
   display: flex
   justify-content: space-around
+  flex-wrap: wrap
   gap: 1rem
   margin-top: 1.5rem
   padding: 1rem

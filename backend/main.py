@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from src.routes.auth import auth_router
 from src.routes.gallery import gallery_router
+from src.routes.media import media_router
 from src.routes.photo import photo_router
 from src.routes.profile import profile_router
 
@@ -19,5 +20,6 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(gallery_router)
+app.include_router(media_router)
 app.include_router(photo_router)
 app.include_router(profile_router)

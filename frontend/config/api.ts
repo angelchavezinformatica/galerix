@@ -12,3 +12,4 @@ export const searchURL = `${api}/search-user`;
 
 export const UploadImage = `${api}/photo`;
 export const galleryURL = `${api}/gallery`;
+export const AllPhotos = `${UploadImage}/all`;
