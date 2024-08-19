@@ -42,6 +42,7 @@ const emit = defineEmits(["close", "submit"]);
   justify-content: center
   align-items: center
   overflow: auto
+  z-index: 1000000
 
 .Modal-content
   background-color: #fff

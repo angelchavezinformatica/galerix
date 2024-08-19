@@ -27,7 +27,7 @@ defineProps<Prop>();
 defineEmits(["handleSubmit"]);
 </script>
 
-<style scoped lang="sass">
+<style lang="sass">
 .AuthForm
   max-width: 400px
   margin: 0 auto

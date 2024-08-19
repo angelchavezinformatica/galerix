@@ -13,7 +13,7 @@
     </div>
     <div class="photo-body">
       <h3 class="photo-title">{{ photo.title }}</h3>
-      <p class="photo-description">{{ photo.description }}</p>
+      <div v-html="compiledMarkdown"></div>
       <RatingStars :score="photo.userscore" @rate="ratePhoto" />
       <p class="photo-score">Puntaje: {{ photo.score }} / 5</p>
     </div>
@@ -33,12 +33,15 @@
 import { base, RatePhoto, ToggleFavoritePhoto } from "~/config/api";
 import type { PhotoI } from "~/interfaces/photo";
 import { useProtectedFetchJSON } from "~/services/api";
+import { marked } from "marked";
 
 const props = defineProps<{ photo: PhotoI }>();
 
 const { token } = useTokenStore();
 const { getData: getPhotos } = usePhotoStore();
 const { request } = useProtectedFetchJSON();
+
+const compiledMarkdown = computed(() => marked(props.photo.description));
 
 const formatDate = (timestamp: string) => {
   const date = new Date(timestamp);
