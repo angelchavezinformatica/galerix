@@ -45,4 +45,4 @@ const handleSubmit = () => {
 };
 </script>
 
-<style scope lang="sass"></style>
+<style scoped lang="sass"></style>

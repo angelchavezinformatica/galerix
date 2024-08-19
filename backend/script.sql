@@ -20,6 +20,12 @@ CREATE TABLE correo_usuario(
     FOREIGN KEY (id_usuario) REFERENCES usuario(id)
 );
 
+CREATE TABLE pagina_principal (
+	id_usuario INTEGER NOT NULL,
+    contenido TEXT,
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+);
+
 CREATE TABLE foto(
 	id INTEGER NOT NULL AUTO_INCREMENT,
     id_usuario INTEGER NOT NULL,

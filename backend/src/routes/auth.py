@@ -49,6 +49,10 @@ async def create_user(user: UserCreate):
         params.append(email)
 
     DB.execute(sql, params)
+    DB.execute(
+        "INSERT INTO pagina_principal (id_usuario, contenido) VALUES (%s, %s);",
+        (data[0], '')
+    )
 
     return Response()
 

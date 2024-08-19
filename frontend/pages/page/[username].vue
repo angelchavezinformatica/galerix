@@ -10,4 +10,4 @@ const {
 } = useRoute();
 </script>
 
-<style scope lang="sass"></style>
+<style scoped lang="sass"></style>

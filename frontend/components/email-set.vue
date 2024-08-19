@@ -39,7 +39,7 @@ const handleSubmit = () => {
 };
 </script>
 
-<style scope lang="sass">
+<style scoped lang="sass">
 .Emails-container
   display: flex
   flex-direction: column

@@ -20,7 +20,7 @@ const token = useTokenStore();
 const showSearch = ref(false);
 </script>
 
-<style scope lang="sass">
+<style scoped lang="sass">
 .Header
   display: flex
   justify-content: space-between

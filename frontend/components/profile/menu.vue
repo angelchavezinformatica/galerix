@@ -45,7 +45,7 @@ const {
 } = useRoute();
 </script>
 
-<style scope lang="sass">
+<style scoped lang="sass">
 .Menu
   display: flex
   justify-content: space-around

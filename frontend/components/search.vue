@@ -36,7 +36,7 @@ const handleSearch = async () => {
 };
 </script>
 
-<style scope lang="sass">
+<style scoped lang="sass">
 .Modal
   position: fixed
   top: 0

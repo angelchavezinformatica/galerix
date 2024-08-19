@@ -11,6 +11,8 @@ export interface ProfileI {
   emails: string[];
   galleries: GalleryI[];
   page: boolean;
+  numphotos: number;
+  text: string;
 }
 
 export interface UserFoundI {

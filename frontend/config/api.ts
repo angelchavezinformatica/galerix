@@ -7,6 +7,7 @@ export const CreateUser = `${authURL}/create`;
 export const LoginUser = `${authURL}/login`;
 export const PageUser = `${api}/page`;
 export const profileURL = `${api}/profile`;
+export const UpdateTextUser = `${profileURL}/text`;
 export const searchURL = `${api}/search-user`;
 
 export const UploadImage = `${api}/photo`;
