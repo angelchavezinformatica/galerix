@@ -75,7 +75,7 @@ async def get_all_photos(authorization: str = Header(...)):
                 WHEN uf.id_foto IS NOT NULL THEN TRUE 
                 ELSE FALSE 
             END AS es_favorito,
-            COALESCE(GROUP_CONCAT(g.nombre_galeria SEPARATOR ', '), '') AS galerias
+            COALESCE(GROUP_CONCAT(g.id SEPARATOR ', '), '') AS galerias
         FROM foto f
         JOIN usuario u ON f.id_usuario = u.id
         LEFT JOIN (
@@ -112,7 +112,7 @@ async def get_all_photos(authorization: str = Header(...)):
             'score': float(photo[7]),
             'userscore': int(photo[8]),
             'isfavorite': bool(photo[9]),
-            'galleries': photo[10].split(', ') if photo[10] else [],
+            'galleries': [int(gallery) for gallery in photo[10].split(', ')] if photo[10] else [],
         }
         for photo in photos
     ])

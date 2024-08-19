@@ -9,5 +9,5 @@ export interface PhotoI {
   score: number;
   userscore: number;
   isfavorite: boolean;
-  galleries: string[];
+  galleries: number[];
 }

@@ -16,7 +16,9 @@
     >
       Favoritos
     </button>
-    <NuxtLink to="/gallery" class="gallery-link">Galerías</NuxtLink>
+    <NuxtLink :to="`/gallery/${username}`" class="gallery-link">
+      Galerías
+    </NuxtLink>
   </div>
   <PhotoContainer :photos="filtered" />
 </template>
