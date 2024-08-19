@@ -188,11 +188,23 @@ async def rate_photo(rate: RatePhoto, authorization: str = Header(...)):
     if isinstance(auth, Response):
         return auth
 
-    DB.execute(
-        "INSERT INTO calificacion (id_usuario, id_foto, puntaje) "
-        "VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE puntaje = VALUES(puntaje);",
-        (auth[0], rate.photoid, decimal.Decimal(rate.rate))
+    rating = DB.select(
+        "SELECT * FROM calificacion WHERE id_usuario=%s AND id_foto=%s;",
+        (auth[0], rate.photoid),
+        many=False
     )
+
+    if rating is None:
+        DB.execute(
+            "INSERT INTO calificacion (id_usuario, id_foto, puntaje) "
+            "VALUES (%s, %s, %s);",
+            (auth[0], rate.photoid, rate.rate)
+        )
+    else:
+        DB.execute(
+            "UPDATE calificacion SET puntaje = %s WHERE id_usuario=%s AND id_foto=%s;",
+            (rate.rate, auth[0], rate.photoid)
+        )
 
     return Response()
 

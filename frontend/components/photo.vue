@@ -1,5 +1,14 @@
 <template>
   <div :key="photo.path" class="photo-card">
+    <div class="photo-footer">
+      <span class="photo-timestamp">{{ formatDate(photo.timestamp) }}</span>
+      <span class="photo-username">
+        Publicado por
+        <NuxtLink :to="`/profile/${photo.username}`">
+          {{ photo.name }}
+        </NuxtLink>
+      </span>
+    </div>
     <div class="photo-header">
       <img
         :src="`${base}/media/${photo.path}`"
@@ -14,17 +23,10 @@
     <div class="photo-body">
       <h3 class="photo-title">{{ photo.title }}</h3>
       <div v-html="compiledMarkdown"></div>
-      <RatingStars :score="photo.userscore" @rate="ratePhoto" />
-      <p class="photo-score">Puntaje: {{ photo.score }} / 5</p>
     </div>
     <div class="photo-footer">
-      <span class="photo-timestamp">{{ formatDate(photo.timestamp) }}</span>
-      <span class="photo-username">
-        Publicado por
-        <NuxtLink :to="`/profile/${photo.username}`">
-          {{ photo.name }}
-        </NuxtLink>
-      </span>
+      <RatingStars :score="photo.userscore" @rate="ratePhoto" />
+      <p class="photo-score">Puntaje: {{ photo.score }} / 5</p>
     </div>
   </div>
 </template>
