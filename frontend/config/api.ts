@@ -13,5 +13,6 @@ export const searchURL = `${api}/search-user`;
 export const UploadImage = `${api}/photo`;
 export const galleryURL = `${api}/gallery`;
 export const AllPhotos = `${UploadImage}/all`;
+export const userPhotosURL = `${UploadImage}/user`;
 export const RatePhoto = `${UploadImage}/rate`;
 export const ToggleFavoritePhoto = `${UploadImage}/favorite`;

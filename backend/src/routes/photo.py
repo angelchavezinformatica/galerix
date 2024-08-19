@@ -118,6 +118,69 @@ async def get_all_photos(authorization: str = Header(...)):
     ])
 
 
+@photo_router.get('/photo/user/{username:str}')
+async def get_user_photos(username: str, authorization: str = Header(...)):
+    auth = auth_user(authorization)
+
+    if isinstance(auth, Response):
+        return auth
+
+    photos = DB.select(
+        """SELECT 
+            f.id, 
+            u.nombre_usuario, 
+            u.nombre, 
+            f.ruta_archivo, 
+            f.instante_subida, 
+            f.titulo, 
+            f.descripcion, 
+            COALESCE(c.promedio_puntaje, 0) AS promedio_puntaje,
+            COALESCE(uc.puntaje_usuario, 0) AS puntaje_usuario,
+            CASE 
+                WHEN uf.id_foto IS NOT NULL THEN TRUE 
+                ELSE FALSE 
+            END AS es_favorito,
+            COALESCE(GROUP_CONCAT(g.nombre_galeria SEPARATOR ', '), '') AS galerias
+        FROM foto f
+        JOIN usuario u ON f.id_usuario = u.id
+        LEFT JOIN 
+            (SELECT id_foto, AVG(puntaje) AS promedio_puntaje
+            FROM calificacion
+            GROUP BY id_foto) c ON c.id_foto = f.id
+        LEFT JOIN 
+            (SELECT id_foto, puntaje AS puntaje_usuario
+            FROM calificacion
+            WHERE id_usuario = (SELECT id FROM usuario WHERE nombre_usuario = %s)) uc ON uc.id_foto = f.id
+        LEFT JOIN 
+            (SELECT id_foto
+            FROM foto_favorita
+            WHERE id_usuario = (SELECT id FROM usuario WHERE nombre_usuario = %s)) uf ON uf.id_foto = f.id
+        LEFT JOIN foto_galeria fg ON fg.id_foto = f.id
+        LEFT JOIN galeria g ON g.id = fg.id_galeria
+        WHERE u.nombre_usuario = %s
+        GROUP BY f.id, u.nombre_usuario, u.nombre, f.ruta_archivo, f.instante_subida, f.titulo, f.descripcion, c.promedio_puntaje, uc.puntaje_usuario, uf.id_foto
+        ORDER BY f.instante_subida DESC;""",
+        (username, username, username)
+    )
+
+    return JSONResponse(content=[
+        {
+            'id': photo[0],
+            'username': photo[1],
+            'name': photo[2],
+            'path': photo[3],
+            'timestamp': str(photo[4]),
+            'title': photo[5],
+            'description': photo[6],
+            'score': float(photo[7]),
+            'userscore': int(photo[8]),
+            'isfavorite': bool(photo[9]),
+            'galleries': photo[10].split(', ') if photo[10] else [],
+        }
+        for photo in photos
+    ])
+
+
 @photo_router.put('/photo/rate')
 async def rate_photo(rate: RatePhoto, authorization: str = Header(...)):
     auth = auth_user(authorization)

@@ -25,7 +25,7 @@ def get_galleries(username: str, authorization: str = Header(...)):
         return auth
 
     galleries = DB.select(
-        "SELECT g.id, nombre_galeria FROM galeria g JOIN usuario u ON g.id_usuario = u.id"
+        "SELECT g.id, g.nombre_galeria FROM galeria g JOIN usuario u ON g.id_usuario = u.id "
         "WHERE u.nombre_usuario = %s;",
         (username,)
     )
