@@ -8,3 +8,12 @@ class UploadPhoto(BaseModel):
     image: str
     gallery_ids: List[int]
     file_extension: str
+
+
+class RatePhoto(BaseModel):
+    photoid: int
+    rate: int
+
+
+class ToogleFavorite(BaseModel):
+    photoid: int

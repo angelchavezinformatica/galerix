@@ -1,6 +1,6 @@
 import { toast } from "vue-sonner";
 
-export type Method = "GET" | "POST" | "UPDATE" | "DELETE" | "PATCH";
+export type Method = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
 export interface Options {
   method?: Method;

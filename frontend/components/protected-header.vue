@@ -30,6 +30,7 @@ const showSearch = ref(false);
   top: 0
   left: 0
   width: 100%
+  z-index: 1000000
   .Header
     display: flex
     justify-content: space-between
